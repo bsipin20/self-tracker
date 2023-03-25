@@ -10,25 +10,6 @@ use aws_sdk_dynamodb::Client;
 // create one connection
 // to a client
 // then share
-
-//impl FromRequest for Client {
-    // associated types
-    // type parameters bound to struct you are
-    // implementing
-    // every client uses associated types
- //   type Error = actix_web::Error;
-    // traits and associated types
-    //can override if want
-    //type Error: Into<Error>;
-    //type Future: Future<Output = Result<Self, Self::Error>>;
-    
-    // extending existing types
-    // impl client
-  //  fn from_request(req: &HttpRequest, payload: &mut Payload) -> Self::Future {
-//        Ok(client)
-   // }
-//}
-
 pub fn run(listener: TcpListener, client: Client) -> Result<Server, std::io::Error> {
     let db_client = Data::new(client);
     let server = HttpServer::new(move || {

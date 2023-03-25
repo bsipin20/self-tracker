@@ -15,7 +15,6 @@ async fn main() -> std::io::Result<()> {
     // its sync
     let shared_config = aws_config::load_from_env().await;
     let client = Client::new(&shared_config); // this needs to implement FromRequest trait
-
     let address = format!("127.0.0.1:{}", 8080);
     let listener = TcpListener::bind(address)?;
     // this awaits the returned "Impl Future" in run
