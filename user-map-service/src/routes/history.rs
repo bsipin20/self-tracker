@@ -3,8 +3,10 @@ use actix_json_response::JsonResponse;
 use actix_web::{web, get, Responder, Result};
 use actix_web::HttpResponse;
 
+use aws_sdk_dynamodb::Client;
+
 #[derive(Deserialize)]
-struct RequestBody {
+pub struct RequestBody {
     start_date: f32,
     end_date: f32,
 }
@@ -32,32 +34,24 @@ struct ResponseBody {
 }
 
 fn get_data(start_date: f64, end_date: f64) -> ResponseBody {
-    let loc1 = Location {
-        longitude: -2138123493280.43243 as f64,
-        latitude: 2930291302.34243 as f64,
-    };
-
-    let metadata1 = Metadata {
-        name: "Mcdonalds".to_string(),
-    };
-
-    let loc2 = Location {
-        longitude: -2138123493280.231433 as f64,
-        latitude: 2930291302.43243 as f64,
-    };
-
-    let metadata2 = Metadata {
-        name: "chipotle".to_string(),
-    };
-
     let history1 = HistoryCoordinate {
-        location: loc1,
-        metadata: metadata1,
+        location: Location {
+            longitude: -221393210.329493024 as f64,
+            latitude: 30249094320492.234432 as f64,
+        },
+        metadata: Metadata {
+            name: "Mcdonalds".to_string(),
+        }
     };
 
     let history2 = HistoryCoordinate {
-        location: loc2,
-        metadata: metadata2,
+        location: Location {
+            longitude: -32409324.324234 as f64,
+            latitude: 3320943024.341230 as f64,
+        },
+        metadata: Metadata {
+            name: "chipotle".to_string(),
+        }
     };
 
     let response = ResponseBody {
@@ -66,8 +60,7 @@ fn get_data(start_date: f64, end_date: f64) -> ResponseBody {
     response
 }
 
-#[get("/history")]
-pub async fn history(json: web::Json<RequestBody>) -> Result<impl Responder> {
+pub async fn history(json: web::Json<RequestBody>, client: web::Data<Client>) -> Result<impl Responder> {
     let data = get_data(json.start_date.into(), json.end_date.into());
     Ok(web::Json(data))
 }
